@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
+import javax.xml.ws.Endpoint;
 import org.apache.commons.logging.Log;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -35,7 +36,9 @@ public class Multivende {
     private static String token, merchant_id;
 
     public static void main(String[] args) throws FileNotFoundException, IOException {
-        getProperties();
+        //Endpoint.publish("http://10.16.11.15:9090/WS/Multivende", new Multivende());
+        Endpoint.publish("http://127.0.0.1:9090/WS/Multivende", new MultivendeImp());
+        /*getProperties();
 
         try {
             token = getToken();
@@ -47,7 +50,7 @@ public class Multivende {
 
         } catch (Exception e) {
             System.out.println("Error" + e);
-        }
+        }*/
 
     }
 
@@ -117,7 +120,8 @@ public class Multivende {
         return merchant_id;
 
     }
-        public static String getWareHouses() throws UnirestException, IOException {
+
+    public static String getWareHouses() throws UnirestException, IOException {
         Unirest.setTimeouts(0, 0);
         HttpResponse<String> response = Unirest.get("http://app.multivende.com/api/m/" + merchant_id + "/stores-and-warehouses/p/{{page}}")
                 .header("accept", "application/json")
@@ -128,16 +132,16 @@ public class Multivende {
             JSONObject jo = new JSONObject(response.getBody());
             System.out.println(jo.toString(4));
             /*JSONArray jsonMainArr = jo.getJSONArray("entries");
-            for (int i = 0; i < jsonMainArr.length(); i++) {
-                System.out.println(jsonMainArr.getJSONObject(i).get("_id").toString());
-                System.out.println(jsonMainArr.getJSONObject(i).get("code").toString());
-            }*/
+             for (int i = 0; i < jsonMainArr.length(); i++) {
+             System.out.println(jsonMainArr.getJSONObject(i).get("_id").toString());
+             System.out.println(jsonMainArr.getJSONObject(i).get("code").toString());
+             }*/
         } catch (Exception e) {
             System.out.println("Error " + e);
         }
         return merchant_id;
 
     }
-       
+
 
 }
